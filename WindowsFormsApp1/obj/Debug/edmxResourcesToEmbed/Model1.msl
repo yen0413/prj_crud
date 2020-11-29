@@ -1,0 +1,17 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+  <EntityContainerMapping StorageEntityContainer="Project1ModelStoreContainer" CdmEntityContainer="Project1Entities1">
+    <EntitySetMapping Name="Members">
+      <EntityTypeMapping TypeName="Project1Model.Member">
+        <MappingFragment StoreEntitySet="Member">
+          <ScalarProperty Name="Birth" ColumnName="Birth" />
+          <ScalarProperty Name="MemberID" ColumnName="MemberID" />
+          <ScalarProperty Name="MemberPWD" ColumnName="MemberPWD" />
+          <ScalarProperty Name="MemberName" ColumnName="MemberName" />
+          <ScalarProperty Name="IsAdmin" ColumnName="IsAdmin" />
+          <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+  </EntityContainerMapping>
+</Mapping>

@@ -1,0 +1,101 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="Project1Model" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityType Name="Member">
+    <Key>
+      <PropertyRef Name="MemberID" />
+    </Key>
+    <Property Name="MemberID" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="MemberPWD" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="MemberName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="IsAdmin" Type="Boolean" Nullable="false" />
+    <Property Name="CreateDate" Type="DateTime" Nullable="false" Precision="3" />
+    <Property Name="Birth" Type="DateTime" Nullable="false" Precision="3" />
+    <NavigationProperty Name="OrderLists" Relationship="Self.FK_OrderList_Member" FromRole="Member" ToRole="OrderList" />
+  </EntityType>
+  <EntityType Name="OrderDetail">
+    <Key>
+      <PropertyRef Name="SeqID" />
+    </Key>
+    <Property Name="SeqID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="OrderID" Type="Int32" Nullable="false" />
+    <Property Name="ProductID" Type="Int32" Nullable="false" />
+    <Property Name="ProductCount" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="OrderList" Relationship="Self.FK_OrderDetail_OrderList" FromRole="OrderDetail" ToRole="OrderList" />
+    <NavigationProperty Name="ProductList" Relationship="Self.FK_OrderDetail_Productlist" FromRole="OrderDetail" ToRole="ProductList" />
+  </EntityType>
+  <EntityType Name="OrderList">
+    <Key>
+      <PropertyRef Name="OrderID" />
+    </Key>
+    <Property Name="OrderID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="MemberID" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="OrderDate" Type="DateTime" Nullable="false" Precision="3" />
+    <NavigationProperty Name="Member" Relationship="Self.FK_OrderList_Member" FromRole="OrderList" ToRole="Member" />
+    <NavigationProperty Name="OrderDetails" Relationship="Self.FK_OrderDetail_OrderList" FromRole="OrderList" ToRole="OrderDetail" />
+    <Property Name="TotalPrice" Type="Int32" Nullable="false" />
+  </EntityType>
+  <EntityType Name="ProductList">
+    <Key>
+      <PropertyRef Name="ProductID" />
+    </Key>
+    <Property Name="ProductID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="ProductName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="ProductPrice" Type="Int32" Nullable="false" />
+    <Property Name="ModifiedDate" Type="DateTime" Nullable="false" Precision="0" />
+    <NavigationProperty Name="OrderDetails" Relationship="Self.FK_OrderDetail_Productlist" FromRole="ProductList" ToRole="OrderDetail" />
+  </EntityType>
+  <Association Name="FK_OrderList_Member">
+    <End Role="Member" Type="Self.Member" Multiplicity="1" />
+    <End Role="OrderList" Type="Self.OrderList" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Member">
+        <PropertyRef Name="MemberID" />
+      </Principal>
+      <Dependent Role="OrderList">
+        <PropertyRef Name="MemberID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_OrderDetail_OrderList">
+    <End Role="OrderList" Type="Self.OrderList" Multiplicity="1" />
+    <End Role="OrderDetail" Type="Self.OrderDetail" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="OrderList">
+        <PropertyRef Name="OrderID" />
+      </Principal>
+      <Dependent Role="OrderDetail">
+        <PropertyRef Name="OrderID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_OrderDetail_Productlist">
+    <End Role="ProductList" Type="Self.ProductList" Multiplicity="1" />
+    <End Role="OrderDetail" Type="Self.OrderDetail" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="ProductList">
+        <PropertyRef Name="ProductID" />
+      </Principal>
+      <Dependent Role="OrderDetail">
+        <PropertyRef Name="ProductID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="Project1Entities3" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="Members" EntityType="Self.Member" />
+    <EntitySet Name="OrderDetails" EntityType="Self.OrderDetail" />
+    <EntitySet Name="OrderLists" EntityType="Self.OrderList" />
+    <EntitySet Name="ProductLists" EntityType="Self.ProductList" />
+    <AssociationSet Name="FK_OrderList_Member" Association="Self.FK_OrderList_Member">
+      <End Role="Member" EntitySet="Members" />
+      <End Role="OrderList" EntitySet="OrderLists" />
+    </AssociationSet>
+    <AssociationSet Name="FK_OrderDetail_OrderList" Association="Self.FK_OrderDetail_OrderList">
+      <End Role="OrderList" EntitySet="OrderLists" />
+      <End Role="OrderDetail" EntitySet="OrderDetails" />
+    </AssociationSet>
+    <AssociationSet Name="FK_OrderDetail_Productlist" Association="Self.FK_OrderDetail_Productlist">
+      <End Role="ProductList" EntitySet="ProductLists" />
+      <End Role="OrderDetail" EntitySet="OrderDetails" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>
